@@ -1,6 +1,5 @@
 import axios from 'axios';
 import React, { useEffect } from 'react';
-import IndexRouter from './router/IndexRouter';
 
 function App() {
   useEffect(() => {
@@ -9,9 +8,7 @@ function App() {
     })
   }, [])
   return (
-    <div>
-      <IndexRouter></IndexRouter>
-    </div>
+    <div>App</div>
   )
 }
 export default App;
