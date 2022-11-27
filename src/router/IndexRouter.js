@@ -13,11 +13,12 @@ export default function IndexRouter() {
         <HashRouter>
             <Routes>
                 <Route path='/login' element={<Login />} />
+                <Route path='/' element={<Redirect to='/home' />} />
 
                 {/* 主页的内容 */}
                 <Route path='/' element={<AuthComponent>
-                    <NewsSandBox />
-                </AuthComponent>}>
+                                            <NewsSandBox/>
+                                        </AuthComponent>}>
                     <Route path='' element={<Home />} />
                     <Route path='home' element={<Home />} />
                     <Route path='use-manage/list' element={<UserList />} />
@@ -25,9 +26,6 @@ export default function IndexRouter() {
                     <Route path='right-manage/right/list' element={<RightList />} />
                     <Route path='*' element={<NotFound />} />
                 </Route>
-
-                {/*  */}
-                <Route path='*' element={<Redirect to='/' />} />
             </Routes>
         </HashRouter>
     )

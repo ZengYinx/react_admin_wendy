@@ -1,14 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import { Layout, Menu } from 'antd';
+import './sideMenu.scss';
 import {
   UserOutlined,
 } from '@ant-design/icons';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 const { Sider } = Layout;
 export default function  SideMenu(props) {
-  const [list, setList] = useState([])
+  const [list, setList] = useState([]);
+  // 根据地址 - 展开menu的显示
+  const selectKey = useLocation().pathname;
+  const openKey = ['/'+selectKey.split('/')[1]]
   useEffect(() => {
     console.log('eff');
     axios.get('http://localhost:8000/rights?_embed=children').then((res) => {
@@ -47,15 +51,19 @@ export default function  SideMenu(props) {
 
   return (
     <Sider trigger={null} collapsible collapsed={props.collapsed}>
-      <div className="logo">全球新闻发布系统</div>
-      <Menu
-        onClick={onClick}
-        style={{width: '100%'}}
-        defaultSelectedKeys={['1']}
-        defaultOpenKeys={['/use-manage']}
-        mode="inline"
-        items={list}
-      />
+      <div className='menu__box'>
+        <div className="logo">全球新闻发布系统</div>
+
+        <Menu
+          onClick={onClick}
+          style={{width: '100%'}}
+          selectedKeys={selectKey}
+          defaultOpenKeys={openKey}
+          mode="inline"
+          items={list}
+          className="menu__con"
+        />
+      </div>
     </Sider>
   )
 }

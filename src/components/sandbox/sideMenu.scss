@@ -1,0 +1,9 @@
+.menu__box {
+    display: flex;
+    height: 100%;
+    flex-direction: column;
+    .menu__con {
+        flex: 1;
+        overflow: auto;
+    }
+}
