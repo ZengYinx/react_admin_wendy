@@ -23,11 +23,11 @@ export default function IndexRouter() {
                     <Route path='use-manage/list' element={<UserList />} />
                     <Route path='right-manage/role/list' element={<RoleList />} />
                     <Route path='right-manage/right/list' element={<RightList />} />
+                    <Route path='*' element={<NotFound />} />
                 </Route>
 
                 {/*  */}
-                <Route path='/' element={<Redirect to='/' />} />
-                <Route path='*' element={<NotFound />} />
+                <Route path='*' element={<Redirect to='/' />} />
             </Routes>
         </HashRouter>
     )
