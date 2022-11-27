@@ -18,7 +18,7 @@ const items = [
 const { Header } = Layout;
 export default function TopHead(props) {
   return (
-    <Header className="site-layout-background" style={{ paddingLeft: '16px', background: '#fff' }}>
+    <Header className="site-layout-background site__header" style={{ paddingLeft: '16px', background: '#fff' }}>
       {
         props.collapsed ? <MenuUnfoldOutlined onClick={props.changeCollapsed} /> : <MenuFoldOutlined onClick={props.changeCollapsed} />
       }

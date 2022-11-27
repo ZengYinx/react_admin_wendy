@@ -2,11 +2,16 @@
   width: 100vw;
   height: 100vh;
 }
-.site-layout-background {
+.site__header {
   display: flex;
   align-items: center;
   justify-content: space-between;
 }
-// .login__box {
-//   float: right;
-// }
+.logo {
+  text-align: center;
+  color: #fff;
+  line-height: 30px;
+  font-size: 20px;
+  margin: 5px 10px;
+  background-color: rgb(255, 255, 255, .2);
+}
