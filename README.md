@@ -7,3 +7,5 @@
 - npm i --save http-proxy-middleware
 
 - npm i --save react-router-dom
+
+- npm i --save antd
