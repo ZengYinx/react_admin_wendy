@@ -9,6 +9,9 @@ import axios from 'axios';
 
 const { Sider } = Layout;
 export default function  SideMenu(props) {
+  const { role: {rights}} = JSON.parse(localStorage.getItem('token'));
+  console.log(rights,'rights')
+
   const [list, setList] = useState([]);
   // 根据地址 - 展开menu的显示
   const selectKey = useLocation().pathname;
@@ -46,7 +49,7 @@ export default function  SideMenu(props) {
         itemObj.children = filterList(item.children);
       }
       // 判断是否打开权限
-      if(item.pagepermisson) {
+      if(item.pagepermisson && rights.includes(item.key)) {
         return itemObj;
       }
       return null;

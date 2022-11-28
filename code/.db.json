@@ -260,6 +260,24 @@
       "roleState": true,
       "default": false,
       "id": 29
+    },
+    {
+      "username": "wendy",
+      "password": "9090",
+      "region": "",
+      "roleId": 1,
+      "roleState": true,
+      "default": false,
+      "id": 30
+    },
+    {
+      "username": "wen",
+      "password": "9090",
+      "region": "北美洲",
+      "roleId": 2,
+      "roleState": true,
+      "default": false,
+      "id": 31
     }
   ],
   "roles": [

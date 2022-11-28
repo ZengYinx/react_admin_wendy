@@ -13,3 +13,9 @@
 安装json-server
 
 - npm install -g json-server
+
+粒子库的使用
+
+- npm install react-particles-js
+
+react-tsparticles
