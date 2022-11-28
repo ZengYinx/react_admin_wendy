@@ -4,7 +4,7 @@ import Login from '../views/login/Login';
 import NewsSandBox from '../views/sandbox/NewsSandBox';
 import NotFound from '../views/NotFound/NotFound';
 import Home from '../views/sandbox/Home/Home';
-import UserList from '../views/sandbox/use-manage/UserList';
+import UserList from '../views/sandbox/user-manage/UserList';
 import RoleList from '../views/sandbox/right-manage/RoleList';
 import RightList from '../views/sandbox/right-manage/RightList';
 
@@ -21,7 +21,7 @@ export default function IndexRouter() {
                                         </AuthComponent>}>
                     <Route path='' element={<Home />} />
                     <Route path='home' element={<Home />} />
-                    <Route path='use-manage/list' element={<UserList />} />
+                    <Route path='user-manage/list' element={<UserList />} />
                     <Route path='right-manage/role/list' element={<RoleList />} />
                     <Route path='right-manage/right/list' element={<RightList />} />
                     <Route path='*' element={<NotFound />} />
