@@ -17,7 +17,7 @@ export default function  SideMenu(props) {
     axios.get('http://localhost:8000/rights?_embed=children').then((res) => {
       // console.log('get的数据：', res.data);
       setList(filterList(res.data));
-      console.log(filterList(res.data), "filterList(res.data)")
+      // console.log(filterList(res.data), "filterList(res.data)")
     });
   }, [])
   const navigate = useNavigate();

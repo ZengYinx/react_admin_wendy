@@ -18,7 +18,7 @@ export default function RightList() {
           element.children = ''
         }
       });
-      console.log(res.data);
+      // console.log(res.data);
       setdataSource(list);
     });
   }, []);
@@ -80,7 +80,7 @@ export default function RightList() {
     });
   };
   const switchMethod = (item) => {
-    console.log(item);
+    // console.log(item);
     item.pagepermisson = item.pagepermisson === 0 ? 1 : 0;
     setdataSource([...dataSource]);
     if(item.grade === 1) {
