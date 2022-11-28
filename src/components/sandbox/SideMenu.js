@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Layout, Menu } from 'antd';
-import './sideMenu.scss';
+import '../../css/sideMenu.scss';
 import {
   UserOutlined,
 } from '@ant-design/icons';
@@ -14,15 +14,15 @@ export default function  SideMenu(props) {
   const selectKey = useLocation().pathname;
   const openKey = ['/'+selectKey.split('/')[1]]
   useEffect(() => {
-    console.log('eff');
     axios.get('http://localhost:8000/rights?_embed=children').then((res) => {
-      console.log('get的数据：', res.data);
+      // console.log('get的数据：', res.data);
       setList(filterList(res.data));
+      console.log(filterList(res.data), "filterList(res.data)")
     });
   }, [])
   const navigate = useNavigate();
   const onClick = (e) => {
-    console.log('click ', e);
+    // console.log('click ', e);
     navigate(e.key);
   };
   // 对应key值的icon图标
@@ -45,7 +45,11 @@ export default function  SideMenu(props) {
       if(item.children?.length) {
         itemObj.children = filterList(item.children);
       }
-      return itemObj;
+      // 判断是否打开权限
+      if(item.pagepermisson) {
+        return itemObj;
+      }
+      return null;
     });
   }
 
