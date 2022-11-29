@@ -1,14 +1,30 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { HashRouter, Route, Routes, useNavigate } from 'react-router-dom';
 import Login from '../views/login/Login';
 import NewsSandBox from '../views/sandbox/NewsSandBox';
 import NotFound from '../views/NotFound/NotFound';
-import Home from '../views/sandbox/Home/Home';
-import UserList from '../views/sandbox/user-manage/UserList';
-import RoleList from '../views/sandbox/right-manage/RoleList';
-import RightList from '../views/sandbox/right-manage/RightList';
-
+import LocalTouterMap from './LocalRouterMap';
+import axios from 'axios';
 export default function IndexRouter() {
+    const [backRouterList, setBackRouterList] = useState([])
+    useEffect(() => {
+        Promise.all([
+            axios.get('http://localhost:8000/rights'),
+            axios.get('http://localhost:8000/children')
+        ]).then(res => {
+            setBackRouterList([...res[0].data, ...res[1].data]);
+        })
+    }, []);
+    const checkRoute = (item) => {
+        return LocalTouterMap[item.key] && item.pagepermisson;
+    }
+    // 当前账户的列表
+    const {role: {rights}} = JSON.parse(localStorage.getItem('token'));
+    // console.log(rights)
+    // 权限列表
+    const checkUserPermission = (item) =>{
+        return rights.includes(item.key)
+    }
     return (
         <HashRouter>
             <Routes>
@@ -19,11 +35,18 @@ export default function IndexRouter() {
                 <Route path='/' element={<AuthComponent>
                                             <NewsSandBox/>
                                         </AuthComponent>}>
-                    <Route path='' element={<Home />} />
-                    <Route path='home' element={<Home />} />
-                    <Route path='user-manage/list' element={<UserList />} />
-                    <Route path='right-manage/role/list' element={<RoleList />} />
-                    <Route path='right-manage/right/list' element={<RightList />} />
+                    {
+                        backRouterList.map(item => {
+                            if(checkRoute(item) && checkUserPermission(item)) {
+                                return <Route
+                                    key={item}
+                                    path={item.key.slice(1)}
+                                    element={LocalTouterMap[item.key]}
+                                />
+                            }
+                            return null;
+                        })
+                    }
                     <Route path='*' element={<NotFound />} />
                 </Route>
             </Routes>

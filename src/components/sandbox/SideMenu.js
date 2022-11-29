@@ -10,14 +10,14 @@ import axios from 'axios';
 const { Sider } = Layout;
 export default function  SideMenu(props) {
   const { role: {rights}} = JSON.parse(localStorage.getItem('token'));
-  console.log(rights,'rights')
+  // console.log(rights,'rights')
 
   const [list, setList] = useState([]);
   // 根据地址 - 展开menu的显示
   const selectKey = useLocation().pathname;
   const openKey = ['/'+selectKey.split('/')[1]]
   useEffect(() => {
-    axios.get('http://localhost:8000/rights?_embed=children').then((res) => {
+    axios.get('/rights?_embed=children').then((res) => {
       // console.log('get的数据：', res.data);
       setList(filterList(res.data));
       // console.log(filterList(res.data), "filterList(res.data)")

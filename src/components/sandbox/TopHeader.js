@@ -16,7 +16,7 @@ export default function TopHead(props) {
     { label: '退出登录', key: 'exit', danger: true},
   ];
   const onClick = ({ key }) => {
-    console.log(key)
+    // console.log(key)
     if (key === 'exit') {
       localStorage.removeItem('token');
       navigate('/login');
@@ -28,7 +28,7 @@ export default function TopHead(props) {
         props.collapsed ? <MenuUnfoldOutlined onClick={props.changeCollapsed} /> : <MenuFoldOutlined onClick={props.changeCollapsed} />
       }
       <div className='login__ava'>
-        <span>欢迎{username}回来</span>
+        <span>欢迎<span style={{color:'#1677ff'}}>{username}</span>回来</span>
         <Dropdown
           menu={{ items, onClick }}
         >

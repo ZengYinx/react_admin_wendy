@@ -16,7 +16,7 @@ export default function RoleList() {
   const [currentId, setcurrentId] = useState(0);
   const [rightList, setrightlist] = useState([]);
   useEffect(() => {
-    axios.get('http://localhost:8000/roles').then((res) => {
+    axios.get('/roles').then((res) => {
       const list = res.data;
       setdataSource(list);
     });
@@ -79,7 +79,7 @@ export default function RoleList() {
   const deleteMethod = (item) => {
     console.log('确认删除项：', item);
     setdataSource(dataSource.filter(data => data.id !== item.id));
-    axios.delete(`http://localhost:8000/roles/${item.id}`);
+    axios.delete(`/roles/${item.id}`);
   }
 
   const showModal = () => {
@@ -106,7 +106,7 @@ export default function RoleList() {
     setIsModalOpen(false);
   };
   useEffect(() => {
-    axios.get('http://localhost:8000/rights?_embed=children').then((res) => {
+    axios.get('/rights?_embed=children').then((res) => {
       const list = res.data;
       setrightlist(list);
     });

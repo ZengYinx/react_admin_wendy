@@ -14,8 +14,12 @@
 
 - npm install -g json-server
 
-粒子库的使用
+粒子库的使用 - 引用报错（待对比了解其他）
 
 - npm install react-particles-js
 
-react-tsparticles
+- react-tsparticles
+
+渲染头部进度条的引用
+
+- npm install --save nprogress
