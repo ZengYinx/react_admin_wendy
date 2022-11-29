@@ -9,8 +9,8 @@ export default function IndexRouter() {
     const [backRouterList, setBackRouterList] = useState([])
     useEffect(() => {
         Promise.all([
-            axios.get('http://localhost:8000/rights'),
-            axios.get('http://localhost:8000/children')
+            axios.get('/rights'),
+            axios.get('/children')
         ]).then(res => {
             setBackRouterList([...res[0].data, ...res[1].data]);
         })

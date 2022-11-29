@@ -23,3 +23,13 @@
 渲染头部进度条的引用
 
 - npm install --save nprogress
+
+富文本编辑器
+
+- npm install --save react-draft-wysiwyg draft-js
+
+https://github.com/jpuri/react-draft-wysiwyg
+
+安装
+
+- npm i --save draftjs-to-html
