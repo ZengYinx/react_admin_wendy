@@ -16,7 +16,7 @@ export default function NewDraft() {
   useEffect(() => {
     axios.get(`/news?author=${username}&auditState=0&_expand=category`).then((res) => {
       const list = res.data;
-      console.log(res.data);
+      // console.log(res.data);
       setdataSource(list);
     });
   }, [username]);
@@ -31,6 +31,9 @@ export default function NewDraft() {
     {
       title: '新闻标题',
       dataIndex: 'title',
+      render: (title, item) => {
+        return <a href={`#/news-manage/preview/${item.id}`}>{title}</a>
+      }
     },
     {
       title: '作者',

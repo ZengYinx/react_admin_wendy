@@ -5,6 +5,8 @@ import RightList from '../views/sandbox/right-manage/RightList';
 import NewsAdd from '../views/sandbox/news-manage/NewsAdd';
 import NewDraft from '../views/sandbox/news-manage/NewDraft';
 import NewCategory from '../views/sandbox/news-manage/NewCategory';
+import NewsPreview from '../views/sandbox/news-manage/NewsPreview';
+
 
 import Audit from '../views/sandbox/audit-manage/Audit';
 import AuditList from '../views/sandbox/audit-manage/AuditList';
@@ -22,6 +24,8 @@ const LocalTouterMap = {
     '/news-manage/add': <NewsAdd />,
     '/news-manage/draft': <NewDraft />,
     '/news-manage/category': <NewCategory />,
+    '/news-manage/preview/:id': <NewsPreview />,
+
     '/audit-manage/audit': <Audit />,
     '/audit-manage/list': <AuditList />,
     '/publish-manage/unpublished': <UnpubLished />,

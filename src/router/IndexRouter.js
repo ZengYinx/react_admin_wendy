@@ -16,7 +16,7 @@ export default function IndexRouter() {
         })
     }, []);
     const checkRoute = (item) => {
-        return LocalTouterMap[item.key] && item.pagepermisson;
+        return LocalTouterMap[item.key] && (item.pagepermisson || item.routepermisson);
     }
     // 当前账户的列表
     const {role: {rights}} = JSON.parse(localStorage.getItem('token'));
