@@ -4,7 +4,6 @@ import axios from 'axios';
 import NewsEditor from '../../../components/news-manage/NewsEditor';
 import { useNavigate } from 'react-router-dom';
 const { Option } = Select;
-
 export default function NewsAdd() {
   const [stepIndex, setStepIndex] = useState(0);
   const [categoriesList, setcategoriesList] = useState([]);
@@ -17,14 +16,6 @@ export default function NewsAdd() {
     { title: '基本信息', description: '新闻标题' },
     { title: '新闻内容', description: '新闻主体内容'},
     { title: '新闻提交', description: '保存草稿或者提交审核' }];
-
-  const onFinish = (values) => {
-    console.log('Success:', values);
-    setFormInfo(values)
-  };
-  const onFinishFailed = (errorInfo) => {
-    console.log('Failed:', errorInfo);
-  };
   useEffect(() => {
     axios.get('/categories').then((res) => {
       // console.log(res.data);
@@ -38,6 +29,7 @@ export default function NewsAdd() {
       NewsForm.current.validateFields().then(res => {
         setStepIndex(stepIndex+1);
         console.log(res)
+        setFormInfo(res)
       }).catch(err => {
         message.error('请填写信息')
       });
@@ -51,8 +43,8 @@ export default function NewsAdd() {
   }
 
   const handleSave = (state) => {
-    console.log('handleNext');
-    axios.post('/news', {
+    console.log('handleNext', formInfo);
+    const params = {
       ...formInfo,
       categoryId: 3,
       content: newsContent,
@@ -64,7 +56,8 @@ export default function NewsAdd() {
       createTime: Date.now(),
       star: 0,
       view: 0
-    }).then(res => {
+    }
+    axios.post('/news', params).then(res => {
       console.log(res);
       const navigateUrl = !state ? '/news-manage/draft' : '/audit-manage/list';
       navigate(navigateUrl);
@@ -82,14 +75,12 @@ export default function NewsAdd() {
             labelCol={{span: 4}}
             wrapperCol={{span: 20}}
             initialValues={{remember: true}}
-            onFinish={onFinish}
-            onFinishFailed={onFinishFailed}
             autoComplete="off"
             ref={NewsForm}
           >
             <Form.Item
               label="新闻标题"
-              name="username"
+              name="title"
               rules={[{
                   required: true,
                   message: 'Please input your username!',
