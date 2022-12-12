@@ -1,4 +1,14 @@
-#
+# admin后台管理的运行
+
+## 项目运行
+
+- 安装环境：npm install
+- 运行： npm run start
+- 运行json-server
+    - 进入code文件：cd code
+    - 运行：json-server --watch .\db.json --port 8000
+
+## 项目开发
 
 环境配置：
 
