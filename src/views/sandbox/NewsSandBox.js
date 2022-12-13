@@ -3,14 +3,15 @@ import './NewsSandBox.scss';
 import { Outlet } from 'react-router-dom';
 import SideMenu from '../../components/sandbox/SideMenu';
 import TopHeader from '../../components/sandbox/TopHeader';
+import { connect } from 'react-redux';
 
-import { Layout } from 'antd';
+import { Layout, Spin } from 'antd';
 // 渲染头部进度条的展示
 import nProgress from 'nprogress';
 import 'nprogress/nprogress.css';
 
 const { Content } = Layout;
-export default function NewsSandBox() {
+function NewsSandBox(props) {
   // 每次渲染组件时头部的进度的效果
   nProgress.start();
   useEffect(() =>{
@@ -31,9 +32,19 @@ export default function NewsSandBox() {
             }}
           >
             {/* 嵌套路由 */}
-            <Outlet></Outlet>
+            {/* Spin加载loading的组件, 控制loading的显示与否spinning */}
+            <Spin size='large' spinning ={props.isLoading}>
+              <Outlet></Outlet>
+            </Spin>
           </Content>
         </Layout>
     </Layout>
   )
 }
+const mapStateToProps = (state) => {
+  const {LoadingReducer} = state
+  return {
+    isLoading: LoadingReducer.isLoading
+  }
+}
+export default connect(mapStateToProps)(NewsSandBox);
