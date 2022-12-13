@@ -47,3 +47,7 @@ https://github.com/jpuri/react-draft-wysiwyg
 安装redux的使用
 
 - npm i --save redux react-redux
+
+数据的持久化:
+
+- npm i --save redux-persist
