@@ -6,9 +6,11 @@ import {
 } from '@ant-design/icons';
 import { useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { connect } from 'react-redux';
+
 
 const { Sider } = Layout;
-export default function  SideMenu(props) {
+function  SideMenu(props) {
   const { role: {rights}} = JSON.parse(localStorage.getItem('token'));
   // console.log(rights,'rights')
 
@@ -57,7 +59,7 @@ export default function  SideMenu(props) {
   }
 
   return (
-    <Sider trigger={null} collapsible collapsed={props.collapsed}>
+    <Sider trigger={null} collapsible collapsed={props.isCollapsed}>
       <div className='menu__box'>
         <div className="logo">全球新闻发布系统</div>
 
@@ -74,3 +76,10 @@ export default function  SideMenu(props) {
     </Sider>
   )
 }
+const mapStateToProps = (state) => {
+  const { CollApsedReducer } = state
+  return {
+    isCollapsed: CollApsedReducer.isCollapsed
+  }
+}
+export default connect(mapStateToProps)(SideMenu);

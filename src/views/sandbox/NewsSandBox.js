@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import './NewsSandBox.scss';
 import { Outlet } from 'react-router-dom';
 import SideMenu from '../../components/sandbox/SideMenu';
@@ -15,21 +15,16 @@ export default function NewsSandBox() {
   nProgress.start();
   useEffect(() =>{
     nProgress.done()
-  })
-  const [collapsed, setCollapsed] = useState(false);
-  const changeCollapsedHandle = () => {
-    setCollapsed(!collapsed)
-  }
+  });
   return (
     <Layout>
-        <SideMenu collapsed= {collapsed}></SideMenu>
+        <SideMenu></SideMenu>
 
         <Layout className="site-layout">
-          <TopHeader collapsed={collapsed} changeCollapsed={changeCollapsedHandle}></TopHeader>
+          <TopHeader></TopHeader>
           <Content
             className="site-layout-background"
             style={{
-              margin: '24px 16px',
               padding: 24,
               minHeight: 280,
               background: '#fff'

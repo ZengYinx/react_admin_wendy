@@ -43,3 +43,7 @@ https://github.com/jpuri/react-draft-wysiwyg
 安装
 
 - npm i --save draftjs-to-html
+
+安装redux的使用
+
+- npm i --save redux react-redux

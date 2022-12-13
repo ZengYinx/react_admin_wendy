@@ -6,8 +6,10 @@ import {
   UserOutlined
 } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
+import { connect } from 'react-redux';
+
 const { Header } = Layout;
-export default function TopHead(props) {
+function TopHead(props) {
   const { username, role: {roleName}} = JSON.parse(localStorage.getItem('token'));
   const navigate = useNavigate();
   const items = [
@@ -22,10 +24,13 @@ export default function TopHead(props) {
       navigate('/login');
     }
   };
+  const onChangeHandle = () =>{
+    props.changeCollapsed()
+  }
   return (
     <Header className="site-layout-background site__header" style={{ paddingLeft: '16px', background: '#fff' }}>
       {
-        props.collapsed ? <MenuUnfoldOutlined onClick={props.changeCollapsed} /> : <MenuFoldOutlined onClick={props.changeCollapsed} />
+        props.isCollapsed ? <MenuUnfoldOutlined onClick={onChangeHandle} /> : <MenuFoldOutlined onClick={onChangeHandle} />
       }
       <div className='login__ava'>
         <span>欢迎<span style={{color:'#1677ff'}}>{username}</span>回来</span>
@@ -38,3 +43,19 @@ export default function TopHead(props) {
     </Header>
   )
 }
+const mapStateToProps = (state) => {
+  // 获取到reducer中的值
+  // console.log(state, "stat");
+  const {CollApsedReducer} = state
+  return {
+    isCollapsed: CollApsedReducer.isCollapsed
+  }
+}
+const mapDispatchToProps = {
+  changeCollapsed () {
+    return {
+      type: 'change_collapsed'
+    }
+  }
+}
+export default connect(mapStateToProps, mapDispatchToProps)(TopHead);

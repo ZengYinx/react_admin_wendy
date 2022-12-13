@@ -1,6 +1,7 @@
-import axios from 'axios';
 import React, { useEffect } from 'react';
 import IndexRouter from './router/IndexRouter';
+import { Provider } from 'react-redux';
+import store from './redux/store';
 
 function App() {
   // useEffect(() => {
@@ -8,6 +9,9 @@ function App() {
   //     console.log('接口的访问', res);
   //   })
   // }, [])
-  return <IndexRouter></IndexRouter>;
+  // 进行react-redux的使用封装
+  return <Provider store={store}>
+    <IndexRouter></IndexRouter>;
+  </Provider>
 }
 export default App;
