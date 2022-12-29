@@ -4,7 +4,6 @@ import { Card, Col, Row, List, Avatar } from 'antd';
 import { EditOutlined, EllipsisOutlined, SettingOutlined } from '@ant-design/icons';
 import axios from 'axios';
 import _ from 'lodash';
-import Item from 'antd/es/list/Item';
 
 const { Meta } = Card;
 export default function Home() {
@@ -20,7 +19,7 @@ export default function Home() {
     axios.get('/news?publishState=2&_expand=category&_sort=start&_order=sesc&_limit=6').then(res => {
       // console.log(res.data);
       setstartList(res.data);
-    })
+    });
   }, []);
 
   // echarts的数据的格式
@@ -30,34 +29,48 @@ export default function Home() {
       // console.log(_.groupBy(res.data, item => item.category.title));
       renderBarView(_.groupBy(res.data, item => item.category.title))
     });
-    const renderBarView = (obj) => {
-      // 基于准备好的dom，初始化echarts实例
-      var myChart = echarts.init(barRef.current);
-      // 指定图表的配置项和数据
-      var option = {
-        title: {
-          text: '新闻分类'
-        },
-        tooltip: {},
-        legend: {
-          data: ['数量']
-        },
-        xAxis: {
-          data: Object.keys(obj)
-        },
-        yAxis: {},
-        series: [
-          {
-            name: '数量',
-            type: 'bar',
-            data: Object.values(obj).map(item => item.length)
-          }
-        ]
-      };
-      // 使用刚指定的配置项和数据显示图表。
-      myChart.setOption(option);
-    }
+    // 组件销毁的时候调用
+    return () => {
+      window.onresize = null;
+    };
   }, []);
+  const renderBarView = (obj) => {
+    // 基于准备好的dom，初始化echarts实例
+    var myChart = echarts.init(barRef.current);
+    // 指定图表的配置项和数据
+    var option = {
+      title: {
+        text: '新闻分类'
+      },
+      tooltip: {},
+      legend: {
+        data: ['数量']
+      },
+      xAxis: {
+        data: Object.keys(obj),
+        axisLabel: {
+          rotate: '45',
+          interval: 0
+        }
+      },
+      yAxis: {
+        minInterval: 1
+      },
+      series: [
+        {
+          name: '数量',
+          type: 'bar',
+          data: Object.values(obj).map(item => item.length)
+        }
+      ]
+    };
+    // 使用刚指定的配置项和数据显示图表。
+    myChart.setOption(option);
+    // resize的监听；
+    window.onresize = () => {
+      myChart.resize();
+    }
+  }
   const { username, region,  role: {roleName}} = JSON.parse(localStorage.getItem('token'));
   return (
     <div style={{overflowY: 'scroll'}}>
