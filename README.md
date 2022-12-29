@@ -51,3 +51,6 @@ https://github.com/jpuri/react-draft-wysiwyg
 数据的持久化:
 
 - npm i --save redux-persist
+
+echart的使用
+cnpm i --save echarts

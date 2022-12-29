@@ -1,12 +1,16 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
+import * as echarts from 'echarts';
 import { Card, Col, Row, List, Avatar } from 'antd';
 import { EditOutlined, EllipsisOutlined, SettingOutlined } from '@ant-design/icons';
 import axios from 'axios';
+import _ from 'lodash';
+import Item from 'antd/es/list/Item';
 
 const { Meta } = Card;
 export default function Home() {
   const [viewList, setviewList] = useState([]); // 最常浏览的数据列表
   const [startList, setstartList] = useState([]); // 点赞最多
+  const barRef = useRef();
 
   useEffect(() => {
     axios.get('/news?publishState=2&_expand=category&_sort=view&_order=sesc&_limit=6').then(res => {
@@ -18,9 +22,45 @@ export default function Home() {
       setstartList(res.data);
     })
   }, []);
+
+  // echarts的数据的格式
+  useEffect(() => {
+    axios.get('/news?publishState=2&_expand=category').then(res => {
+      // console.log(res.data);
+      // console.log(_.groupBy(res.data, item => item.category.title));
+      renderBarView(_.groupBy(res.data, item => item.category.title))
+    });
+    const renderBarView = (obj) => {
+      // 基于准备好的dom，初始化echarts实例
+      var myChart = echarts.init(barRef.current);
+      // 指定图表的配置项和数据
+      var option = {
+        title: {
+          text: '新闻分类'
+        },
+        tooltip: {},
+        legend: {
+          data: ['数量']
+        },
+        xAxis: {
+          data: Object.keys(obj)
+        },
+        yAxis: {},
+        series: [
+          {
+            name: '数量',
+            type: 'bar',
+            data: Object.values(obj).map(item => item.length)
+          }
+        ]
+      };
+      // 使用刚指定的配置项和数据显示图表。
+      myChart.setOption(option);
+    }
+  }, []);
   const { username, region,  role: {roleName}} = JSON.parse(localStorage.getItem('token'));
   return (
-    <div>
+    <div style={{overflowY: 'scroll'}}>
       <Row gutter={16}>
       <Col span={8}>
         <Card title="用户最常浏览" bordered={true}>
@@ -79,6 +119,12 @@ export default function Home() {
         </Card>
       </Col>
     </Row>
+    {/* ecahrts的数据表格 */}
+    <div ref= {barRef} style={{
+      height: '400px',
+      width: '100%',
+      marginTop: '30px'
+      }}></div>
     </div>
   )
 }

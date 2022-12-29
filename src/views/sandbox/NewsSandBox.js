@@ -28,6 +28,7 @@ function NewsSandBox(props) {
             style={{
               padding: 24,
               minHeight: 280,
+              overflowY: 'scroll',
               background: '#fff'
             }}
           >
