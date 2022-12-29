@@ -61,7 +61,7 @@ function  SideMenu(props) {
   return (
     <Sider trigger={null} collapsible collapsed={props.isCollapsed}>
       <div className='menu__box'>
-        <div className="logo">全球新闻发布系统</div>
+        <div className="logo">用户权限管理系统</div>
 
         <Menu
           onClick={onClick}
@@ -82,4 +82,5 @@ const mapStateToProps = (state) => {
     isCollapsed: CollApsedReducer.isCollapsed
   }
 }
+
 export default connect(mapStateToProps)(SideMenu);

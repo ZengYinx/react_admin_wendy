@@ -1,54 +1,84 @@
-import React from 'react';
-import { Button } from 'antd';
+import React, { useEffect, useState } from 'react';
+import { Card, Col, Row, List, Avatar } from 'antd';
+import { EditOutlined, EllipsisOutlined, SettingOutlined } from '@ant-design/icons';
 import axios from 'axios';
 
+const { Meta } = Card;
 export default function Home() {
-  // json-server的增删改查；
+  const [viewList, setviewList] = useState([]); // 最常浏览的数据列表
+  const [startList, setstartList] = useState([]); // 点赞最多
+
+  useEffect(() => {
+    axios.get('/news?publishState=2&_expand=category&_sort=view&_order=sesc&_limit=6').then(res => {
+      // console.log(res.data);
+      setviewList(res.data);
+    });
+    axios.get('/news?publishState=2&_expand=category&_sort=start&_order=sesc&_limit=6').then(res => {
+      // console.log(res.data);
+      setstartList(res.data);
+    })
+  }, []);
+  const { username, region,  role: {roleName}} = JSON.parse(localStorage.getItem('token'));
   return (
     <div>
-      Home
-      <Button onClick={() => {
-        axios.get('/posts').then((res) => {
-          console.log('get的数据：', res)
-        });
-      }}>获取数据</Button>
-      <Button onClick={() => {
-        axios.post('/posts', {
-          title: '777',
-          author: 'kervin'
-        });
-      }}>post提交数据</Button>
-
-      <Button onClick={() => {
-        axios.put('/posts/1', {
-          title: '111- 替换id为1的值'
-        });
-      }}>put替换数据</Button>
-
-      <Button onClick={() => {
-        axios.patch('/posts/1', {
-          title: '111- 修改id为1的值'
-        });
-      }}>patch更新数据</Button>
-
-      <p>关联的id会一并删除</p>
-      <Button onClick={() => {
-        axios.delete('/posts/1')
-      } }>delete更新数据</Button>
-
-      <p>_embed</p>
-      <Button onClick={() => {
-        axios.get('/posts?_embed=comments').then((res) => {
-          console.log('get的数据：', res.data)
-        });
-      }}>获取_embed向下关联的数据数据</Button>
-      <hr />
-      <p>_expand</p>
-      <Button onClick={() => {
-        axios.get('/comments?_expand=post').then((res) => {
-          console.log('get的数据：', res.data)
-        });
-      }}>获取_expand向下关联的数据数据</Button>
+      <Row gutter={16}>
+      <Col span={8}>
+        <Card title="用户最常浏览" bordered={true}>
+        <List
+          bordered= {false}
+          dataSource={viewList}
+          renderItem={(item) => (
+            <List.Item>
+              <a href={`#/news-manage/preview/${item.id}`}>
+                {item.title}
+              </a>
+            </List.Item>
+          )}
+        />
+        </Card>
+      </Col>
+      <Col span={8}>
+        <Card title="用户点赞最多" bordered={true}>
+        <List
+          bordered= {false}
+          dataSource={startList}
+          renderItem={(item) => (
+            <List.Item>
+              <a href={`#/news-manage/preview/${item.id}`}>
+                {item.title}
+              </a>
+            </List.Item>
+          )}
+        />
+        </Card>
+      </Col>
+      <Col span={8}>
+        <Card
+          cover={
+            <img
+              alt="example"
+              src="https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png"
+            />
+          }
+          actions={[
+            <SettingOutlined key="setting" />,
+            <EditOutlined key="edit" />,
+            <EllipsisOutlined key="ellipsis" />,
+          ]}
+        >
+          <Meta
+            avatar={<Avatar src="https://joeschmoe.io/api/v1/random" />}
+            title={username}
+            description={
+              <div>
+                <b>{region?region: '全球'}</b>
+                <span style={{paddingLeft:'30px'}}>{roleName}</span>
+              </div>
+            }
+          />
+        </Card>
+      </Col>
+    </Row>
     </div>
   )
 }
