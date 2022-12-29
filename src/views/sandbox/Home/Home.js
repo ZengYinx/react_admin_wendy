@@ -1,15 +1,22 @@
 import React, { useEffect, useRef, useState } from 'react';
 import * as echarts from 'echarts';
-import { Card, Col, Row, List, Avatar } from 'antd';
+import { Card, Col, Row, List, Avatar, Drawer } from 'antd';
 import { EditOutlined, EllipsisOutlined, SettingOutlined } from '@ant-design/icons';
-import axios from 'axios';
+import axios, { all } from 'axios';
 import _ from 'lodash';
 
 const { Meta } = Card;
 export default function Home() {
   const [viewList, setviewList] = useState([]); // 最常浏览的数据列表
   const [startList, setstartList] = useState([]); // 点赞最多
+  const [allList, setallList] = useState([]); 
+
+  const [isVisible, setisVisible] = useState(false);
+  const [pieChart, setpieChart] = useState();
+
+
   const barRef = useRef();
+  const pieRef = useRef();
 
   useEffect(() => {
     axios.get('/news?publishState=2&_expand=category&_sort=view&_order=sesc&_limit=6').then(res => {
@@ -27,7 +34,8 @@ export default function Home() {
     axios.get('/news?publishState=2&_expand=category').then(res => {
       // console.log(res.data);
       // console.log(_.groupBy(res.data, item => item.category.title));
-      renderBarView(_.groupBy(res.data, item => item.category.title))
+      renderBarView(_.groupBy(res.data, item => item.category.title));
+      setallList(res.data)
     });
     // 组件销毁的时候调用
     return () => {
@@ -71,6 +79,69 @@ export default function Home() {
       myChart.resize();
     }
   }
+  const renderPieView = (obj) => {
+    const currentList = allList.filter(item => item.author === username);
+    const groupObj = _.groupBy(currentList, item => item.category.title);
+    let list = [];
+    for(let key in groupObj) {
+      list.push({
+        name: key,
+        value: groupObj[key].length
+      })
+    }
+    console.log(list)
+    // 基于准备好的dom，初始化echarts实例
+    var myChart;
+    if(!pieChart) {
+      myChart = echarts.init(pieRef.current);
+      setpieChart(myChart);
+    } else {
+      myChart = pieChart;
+    }
+    var option;
+    option = {
+      title: {
+        text: '当前用户新闻分类图示',
+        left: 'center'
+      },
+      tooltip: {
+        trigger: 'item'
+      },
+      legend: {
+        orient: 'vertical',
+        itemWidth: 24,   // 设置图例图形的宽
+        itemHeight: 18,  // 设置图例图形的高
+        // x 设置水平安放位置，默认全图居中，可选值：'center' ¦ 'left' ¦ 'right' ¦ {number}（x坐标，单位px）
+        x: 'left',
+        // y 设置垂直安放位置，默认全图顶端，可选值：'top' ¦ 'bottom' ¦ 'center' ¦ {number}（y坐标，单位px）
+        y: 'center',
+        textStyle: {
+          color: '#666'  // 图例文字颜色
+        },
+        // itemGap设置各个item之间的间隔，单位px，默认为10，横向布局时为水平间隔，纵向布局时为纵向间隔
+        itemGap: 30,
+      },
+      series: [
+        {
+          name: 'Access From',
+          type: 'pie',
+          radius: '50%',
+          data: list,
+          emphasis: {
+            itemStyle: {
+              shadowBlur: 10,
+              shadowOffsetX: 0,
+              shadowColor: 'rgba(0, 0, 0, 0.5)'
+            }
+          }
+        }
+      ]
+    };
+
+    option && myChart.setOption(option);
+
+  }
+
   const { username, region,  role: {roleName}} = JSON.parse(localStorage.getItem('token'));
   return (
     <div style={{overflowY: 'scroll'}}>
@@ -114,7 +185,12 @@ export default function Home() {
             />
           }
           actions={[
-            <SettingOutlined key="setting" />,
+            <SettingOutlined key="setting" onClick={() => {
+              setisVisible(true);
+              setTimeout(() => {
+                renderPieView();
+              }, 0);
+            }}/>,
             <EditOutlined key="edit" />,
             <EllipsisOutlined key="ellipsis" />,
           ]}
@@ -132,6 +208,22 @@ export default function Home() {
         </Card>
       </Col>
     </Row>
+    {/* 右边的抽屉的效果 */}
+    <Drawer
+      width='500px'
+      title="个人新闻分类"
+      placement="right"
+      onClose={() => {
+        setisVisible(false)
+      }}
+      open={isVisible}
+    >
+      <div ref= {pieRef} style={{
+      width: '500px',
+      height:'500px',
+      marginTop: '30px'
+      }}></div>
+    </Drawer>
     {/* ecahrts的数据表格 */}
     <div ref= {barRef} style={{
       height: '400px',
